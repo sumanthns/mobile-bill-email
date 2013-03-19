@@ -1,0 +1,38 @@
+!!!
+%html
+    %head
+        %title Mobile Bills
+        %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"}
+        %script{src: "js/jquery.ui.widget.js"}
+        %script{src: "js/jquery.iframe-transport.js"}
+        %script{src: "js/jquery.fileupload.js"}
+        :css
+            .bar {
+                height: 18px;
+                background: green;
+            }
+    %body{:style => "font-size:9pt;"}
+        %h1 Send Mail
+        Mobile Bills:
+        %input{:type => "file", :id => "fileupload", :name => "zipfiles[]", :multiple => "multiple", :'data-url' => "/mobile-bills"}
+        %br      
+        #progress
+            .bar{:style => "width: 0%;color: white;font-size:9pt;"}              
+        %form{:action => "/upload-bills", :method => "post", :enctype => "multipart/form-data"}
+            Excel file:
+            %input{:type => "file", :name => "xlsfile"}
+            %input{:type => "submit"}
+        =yield
+        :javascript
+            $(function () {
+                $('#fileupload').fileupload({
+                    dataType: 'json',
+                    done: function (e, data) {                     
+                    },
+                    progressall: function (e, data) {
+                        var progress = parseInt(data.loaded / data.total * 100, 10);
+                        $('#progress .bar').css('width', (progress - 1) + '%');
+                        $('#progress .bar').text('' + progress + ' %');
+                    }
+                });
+            });

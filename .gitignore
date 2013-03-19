@@ -1,0 +1,8 @@
+uploads/*.xls
+uploads/*.pdf
+uploads/extracted/*.pdf
+tmp
+log
+vendor
+.bundle
+.DS_Store
