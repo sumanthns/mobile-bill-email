@@ -1,14 +1,17 @@
-%h1= name
-%form{:action => "/send-mail", :method => "post"}
-	%input{:type => "button", :class => "sendButton", :value => "Send Mail"}
-%table
-	%tbody
-	- index = 0
-	- data.each do |d|
-		- id = (d[8].split('@').first).split('.').first
-		%tr{:style => "color:#{d[9] ? 'black' : 'red'};font-size:9pt", :id => id}
-			%td{:style => "text-align:right;font-weight:bold"}= index += 1
-			%td= d[1]
-			%td= d[2]
-			%td= d[8]
+.grid_12{:align => 'center'}
+	%h1= name
+.clear
+.grid_12{:align => 'center'}
+	%form{:action => "/send-mail", :method => "post"}
+		%input{:type => "button", :class => "sendButton", :value => "Send Mail"}
+
+- index = 0
+- data.each do |d|
+	- id = (d[8].split('@').first).split('.').first
+	%div{:style => "color:#{d[9] ? 'black' : 'red'};font-size:9pt", :id => id}
+		.grid_1{:style => "text-align:right;font-weight:bold"}= index += 1
+		.grid_5= d[1]
+		.grid_2= d[2]
+		.grid_4= d[8]
+	.clear
 %script{src: "js/publish.js"}

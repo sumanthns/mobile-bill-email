@@ -3,6 +3,7 @@ GEM
   specs:
     backports (3.1.1)
     daemon_controller (1.1.2)
+    daemons (1.1.9)
     eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     fastthread (1.0.7)
@@ -49,6 +50,10 @@ GEM
       tilt (~> 1.3)
     spreadsheet (0.8.2)
       ruby-ole (>= 1.0)
+    thin (1.5.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.3.4)
     treetop (1.4.12)
       polyglot
@@ -67,3 +72,4 @@ DEPENDENCIES
   roo
   sinatra
   sinatra-contrib
+  thin

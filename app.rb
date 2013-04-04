@@ -72,18 +72,18 @@ post '/send-mail' do
   end
 
   Parallel.each(settings.data, :in_threads => 8) do |data|
-    mail = Mail.new do
-      to data[8]
-      from 'premkumar.s@thoughtworks.com'
-      subject 'Your Airtel Bill - ' + settings.name
-      html_part do
-        content_type 'text/html; charset=UTF-8'
-      end
-      add_file :filename => "#{data[2]}.pdf", :content => File.read(File.join("./uploads/extracted/", "#{data[2]}.pdf")) unless data[9] == false
-    end
-    mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name}
-    mail.deliver!
-    # sleep 1
+    # mail = Mail.new do
+    #   to data[8]
+    #   from 'premkumar.s@thoughtworks.com'
+    #   subject 'Your Airtel Bill - ' + settings.name
+    #   html_part do
+    #     content_type 'text/html; charset=UTF-8'
+    #   end
+    #   add_file :filename => "#{data[2]}.pdf", :content => File.read(File.join("./uploads/extracted/", "#{data[2]}.pdf")) unless data[9] == false
+    # end
+    # mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name}
+    # mail.deliver!
+    sleep 1
     settings.connections.each { |out| out << "data: {\"index\":\"#{(data[8].split('@').first).split('.').first}\"}\n\n" }
   end
   204

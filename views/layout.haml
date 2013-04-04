@@ -16,8 +16,7 @@
         .container_12
             .grid_12{:align => 'center'}
                 %h1 Send Mail
-            .grid_4 &nbsp;
-            .grid_2{:align => 'right'}
+            .grid_5{:align => 'right'}
                 Mobile Bills:
             .grid_3
                 %input{:type => "file", :id => "fileupload", :name => "zipfiles[]", :multiple => "multiple", :'data-url' => "/mobile-bills"}
@@ -28,13 +27,21 @@
                     .bar{:style => "width: 0%;color: white;font-size:9pt;"}              
             .clear
             %form{:action => "/upload-bills", :method => "post", :enctype => "multipart/form-data"}
-                .grid_4 &nbsp;
-                .grid_2{:align => 'right'}
+                .grid_5{:align => 'right'}
                     Excel file:
                 %input{:type => "file", :name => "xlsfile", :class => 'grid_3'}
                 .clear
+                %br
+                .grid_5{:align => 'right'}
+                    From Address:
+                .grid_3
+                    %input{:type => 'text'}
+                .grid_4
+                    %i (e.g. premkumar.s@thoughtworks.com)
+                .clear
+                %br
                 .grid_12{:align => 'center'}
-                    %input{:type => "submit"}
+                    %input{:type => "submit", :value => 'Enter'}
             =yield
             :javascript
                 $(function () {
