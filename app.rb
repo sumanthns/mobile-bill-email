@@ -19,7 +19,6 @@ configure do
   set :header, nil
   set :data, nil
   set :name, ''
-  set :connections, []
   set :server, 'thin'
   set :from_address, nil
 end

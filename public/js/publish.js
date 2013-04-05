@@ -4,7 +4,7 @@
       e.preventDefault();
       $(this).attr('value', 'Sending...');
       $(this).attr('disabled', 'disabled');
-      
+      var button = this;
       var es = new EventSource('/send-mail');      
       
       es.addEventListener('message', function(e){      
@@ -12,6 +12,7 @@
         console.log($('.pending').size());
         if($('.pending').size() == 0) {
           alert('Completed!');
+          $(button).attr('value', 'completed');
           es.close();          
         }
       }, false);
