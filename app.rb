@@ -21,6 +21,7 @@ configure do
   set :name, ''
   set :connections, []
   set :server, 'thin'
+  set :from_address, nil
 end
 
 post '/upload-bills' do
@@ -30,6 +31,7 @@ post '/upload-bills' do
   sheet = excel.sheet(excel.sheets.last)
   settings.data = []
   settings.header = sheet.row(1)
+  settings.from_address = params['from_address']
   settings.name = excel.sheets.last
   2.upto(sheet.last_row) do |row_num|
     begin
@@ -46,7 +48,7 @@ post '/upload-bills' do
 
     end
   end
-  haml :'partials/success', :locals => {:data => settings.data, :name => settings.name}
+  haml :'partials/success', :locals => {:data => settings.data, :name => settings.name, :from => settings.from_address}
 end
 
 post '/mobile-bills' do
@@ -59,34 +61,27 @@ post '/mobile-bills' do
   response_hash.to_json
 end
 
-get '/stream', :provides => 'text/event-stream' do
-  stream :keep_open do |out|
-    settings.connections << out
-    out.callback { settings.connections.delete(out) }
-  end
-end
-
-post '/send-mail' do
+get '/send-mail', :provides => 'text/event-stream' do
   Mail.defaults do
     delivery_method :smtp, {:address => "sifymisc01.thoughtworks.com", :port => 25, :enable_starttls_auto => true}
   end
 
-  Parallel.each(settings.data, :in_threads => 8) do |data|
-    # mail = Mail.new do
-    #   to data[8]
-    #   from 'premkumar.s@thoughtworks.com'
-    #   subject 'Your Airtel Bill - ' + settings.name
-    #   html_part do
-    #     content_type 'text/html; charset=UTF-8'
-    #   end
-    #   add_file :filename => "#{data[2]}.pdf", :content => File.read(File.join("./uploads/extracted/", "#{data[2]}.pdf")) unless data[9] == false
-    # end
-    # mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name}
-    # mail.deliver!
-    sleep 1
-    settings.connections.each { |out| out << "data: {\"index\":\"#{(data[8].split('@').first).split('.').first}\"}\n\n" }
+  stream :keep_open do |out|
+    Parallel.each(settings.data, :in_threads => 8) do |data|    
+      mail = Mail.new do
+        to data[8]
+        from settings.from_address
+        subject 'Your Airtel Bill - ' + settings.name
+        html_part do
+          content_type 'text/html; charset=UTF-8'
+        end
+        add_file :filename => "#{data[2]}.pdf", :content => File.read(File.join("./uploads/extracted/", "#{data[2]}.pdf")) unless data[9] == false
+      end
+      mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name}
+      mail.deliver!
+      out << "data:{\"index\":\"#{(data[8].split('@').first).split('.').first}\"}\n\n"
+    end
   end
-  204
 end
 
 helpers do

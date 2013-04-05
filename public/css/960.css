@@ -651,3 +651,8 @@ body {
 .container_16 {
   zoom: 1;
 }
+
+
+.done > div {
+  text-decoration: line-through;
+}

@@ -29,13 +29,14 @@
             %form{:action => "/upload-bills", :method => "post", :enctype => "multipart/form-data"}
                 .grid_5{:align => 'right'}
                     Excel file:
-                %input{:type => "file", :name => "xlsfile", :class => 'grid_3'}
+                .grid_3
+                    %input{:type => "file", :name => "xlsfile"}
                 .clear
                 %br
                 .grid_5{:align => 'right'}
                     From Address:
                 .grid_3
-                    %input{:type => 'text'}
+                    %input{:type => 'text', :name => 'from_address'}
                 .grid_4
                     %i (e.g. premkumar.s@thoughtworks.com)
                 .clear
