@@ -24,7 +24,7 @@ configure do
 end
 
 post '/upload-bills' do
-  rename_files
+  rename_files(params['office'])
   store_file(params['xlsfile'])
 	excel = Roo::Excel.new('./uploads/' + params['xlsfile'][:filename])
   sheet = excel.sheet(excel.sheets.last)
@@ -90,10 +90,14 @@ helpers do
   	end		
 	end
 
-  def rename_files
+  def rename_files(office)
     Dir.glob('./uploads/*.pdf') do |file|
       original_file_name = /\/[^\/]+$/.match(file) [0]
-      FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("_").last)
+      if(office != '4') #not pune.
+        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("_").last)
+      else #pune
+        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)        
+      end
     end
   end
 end

@@ -20,7 +20,25 @@
       es.addEventListener('error', function(e) {
         if(es.readystate != EventSource.CLOSED) es.close();
       }, false);
-
     });
+
+    $('#submitButton').on('click', function(e){
+      e.preventDefault();
+      var errors = "";
+      
+      if($('input[name=from_address]').val().trim() == "") {
+        errors += "Enter Sender's 'From' email address\n";
+      }
+
+      if($('#office option:selected').val() == "0") {
+        errors += "Choose Office\n";
+      }
+
+      if(errors == "") {
+        $('#uploadForm').submit();
+      } else {
+        alert(errors);
+      }
+    })
   });
 }).call(this);

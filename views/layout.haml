@@ -6,6 +6,7 @@
         %script{src: "js/jquery.ui.widget.js"}
         %script{src: "js/jquery.iframe-transport.js"}
         %script{src: "js/jquery.fileupload.js"}
+        %script{src: "js/publish.js"}
         %link{:href => "css/960.css", :rel => 'stylesheet', :type => 'text/css'}
         :css
             .bar {
@@ -26,7 +27,7 @@
                 #progress
                     .bar{:style => "width: 0%;color: white;font-size:9pt;"}              
             .clear
-            %form{:action => "/upload-bills", :method => "post", :enctype => "multipart/form-data"}
+            %form{:action => "/upload-bills", :id => 'uploadForm', :method => "post", :enctype => "multipart/form-data"}
                 .grid_5{:align => 'right'}
                     Excel file:
                 .grid_3
@@ -41,8 +42,18 @@
                     %i (e.g. premkumar.s@thoughtworks.com)
                 .clear
                 %br
+                .grid_5 &nbsp;
+                .grid_3
+                    %select{:id => 'office'}
+                        %option{:value => 0} Select Office
+                        %option{:value => 1} Chennai
+                        %option{:value => 2} Bangalore
+                        %option{:value => 3} Gurgaon                    
+                        %option{:value => 4} Pune
+                .clear
+                %br
                 .grid_12{:align => 'center'}
-                    %input{:type => "submit", :value => 'Enter'}
+                    %input{:type => "submit", :id => 'submitButton', :value => 'Enter'}
             =yield
             :javascript
                 $(function () {
