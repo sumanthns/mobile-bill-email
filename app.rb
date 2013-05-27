@@ -21,6 +21,7 @@ configure do
   set :name, ''
   set :server, 'thin'
   set :from_address, nil
+  set :test_address, nil
 end
 
 post '/upload-bills' do
@@ -31,6 +32,7 @@ post '/upload-bills' do
   settings.data = []
   settings.header = sheet.row(1)
   settings.from_address = params['from_address']
+  settings.test_address = params['test_address']
   settings.name = excel.sheets.last
   2.upto(sheet.last_row) do |row_num|
     begin
@@ -68,7 +70,7 @@ get '/send-mail', :provides => 'text/event-stream' do
   stream :keep_open do |out|
     Parallel.each(settings.data, :in_threads => 8) do |data|    
       mail = Mail.new do
-        to data[8]
+        to (settings.test_address == nil) ? data[8] : settings.test_address
         from settings.from_address
         subject 'Your Airtel Bill - ' + settings.name
         html_part do
@@ -94,7 +96,7 @@ helpers do
     Dir.glob('./uploads/*.pdf') do |file|
       original_file_name = /\/[^\/]+$/.match(file) [0]
       if(office != '4') #not pune.
-        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("_").last)
+        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").last)
       else #pune
         FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)        
       end

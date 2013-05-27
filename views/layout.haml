@@ -51,9 +51,20 @@
                         %option{:value => 3} Gurgaon                    
                         %option{:value => 4} Pune
                 .clear
+                .grid_5{:align => 'right'}
+                    Debug?:
+                .grid_3
+                    %input{:type => 'checkbox', :id => 'debugSwitch'}
+                .clear
+                .grid_5 &nbsp;
+                #testBlock{:style => 'display:none;'} 
+                    .grid_3
+                        %input{:type => 'text', :name => 'test_address'}
+                    .grid_4
+                        %i{:style => 'color:red;font-weight:bold;'} (FOR TESTING ONLY)
                 %br
                 .grid_12{:align => 'center'}
-                    %input{:type => "submit", :id => 'submitButton', :value => 'Enter'}
+                    %input{:type => "submit", :id => 'submitButton', :value => 'Enter'}                
             =yield
             :javascript
                 $(function () {
