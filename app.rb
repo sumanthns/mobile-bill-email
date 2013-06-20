@@ -93,10 +93,10 @@ helpers do
 	end
 
   def rename_files(office)
-    Dir.glob('./uploads/*.pdf') do |file|
+    Dir.glob('./uploads/*.pdf', File::FNM_CASEFOLD) do |file|
       original_file_name = /\/[^\/]+$/.match(file) [0]
       if(office != '4') #not pune.
-        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").last)
+        FileUtils.cp(file, './uploads/extracted/' + original_file_name.match(/\d{10}/)[0] + ".pdf")
       else #pune
         FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)        
       end
