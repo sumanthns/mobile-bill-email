@@ -1,3 +1,4 @@
+.idea
 uploads/*.xls
 uploads/*.pdf
 uploads/extracted/*.pdf

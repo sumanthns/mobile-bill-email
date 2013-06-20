@@ -22,10 +22,6 @@
       }, false);
     });
 
-    $('#debugSwitch').on('click', function(e) {
-      $('#testBlock').toggle();
-    });
-
     $('#submitButton').on('click', function(e){
       e.preventDefault();
       var errors = "";
