@@ -1,6 +1,5 @@
-(function() {
-  jQuery(function() {
-    $(".sendButton").on('click', function(e) {
+$(document).ready(function() {
+    $(".sendButton").click(function() {
       e.preventDefault();
       $(this).attr('value', 'Sending...');
       $(this).attr('disabled', 'disabled');
@@ -40,5 +39,4 @@
         alert(errors);
       }
     })
-  });
-}).call(this);
+});
