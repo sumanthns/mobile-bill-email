@@ -61,6 +61,9 @@ post '/mobile-bills' do
 end
 
 get '/send-mail', :provides => 'text/event-stream' do
+  p '*'*80
+  p settings.data
+  p '*'*80
   Mail.defaults do
     delivery_method :smtp, {:address => "sifymisc01.thoughtworks.com", :port => 25, :enable_starttls_auto => true}
   end
