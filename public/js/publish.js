@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $(".sendButton").click(function() {
+    $(".sendButton").click(function(e) {
       e.preventDefault();
       $(this).attr('value', 'Sending...');
       $(this).attr('disabled', 'disabled');
