@@ -97,7 +97,8 @@ helpers do
     Dir.glob('./uploads/*.pdf', File::FNM_CASEFOLD) do |file|
       original_file_name = /\/[^\/]+$/.match(file) [0]
       if(office != '4') #not pune.
-        FileUtils.cp(file, './uploads/extracted/' + original_file_name.match(/\d{10}/)[1] + ".pdf")
+        match = original_file_name.match(/\d{10}(?!.*\d{10})/) #last 10 digits
+        FileUtils.cp(file, './uploads/extracted/' + match[0] + ".pdf") unless match == nil        
       else #pune
         FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)        
       end
