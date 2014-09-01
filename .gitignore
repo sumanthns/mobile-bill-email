@@ -1,4 +1,5 @@
 .idea
+uploads/**/*
 uploads/*.xls
 uploads/*.pdf
 uploads/extracted/*.pdf
@@ -8,3 +9,4 @@ vendor
 .bundle
 .DS_Store
 *~
+tags
