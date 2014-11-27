@@ -45,7 +45,9 @@ post '/upload-bills' do
       settings.data.push(row[0, 10])
       settings.data.last[0] = emp_id
       settings.data.last[2] = mobile_number
-      settings.data.last.push(File.exists?(File.join("./uploads/extracted/", mobile_number + ".pdf")))
+      bill_name = mobile_number
+      bill_name = row[10] if settings.office.name == 'pune'
+      settings.data.last << File.exists?(File.join("./uploads/extracted/", bill_name + ".pdf"))
     rescue => e
       p "#{e} - no mobile bill\n\n #{row_num}"
     end
@@ -83,7 +85,7 @@ get '/send-mail', :provides => 'text/event-stream' do
           end
           file_name = "#{data[2]}.pdf"
           file_name = "#{data[10]}.pdf" if settings.office.name == 'pune'
-          add_file :filename => file_name, :content => File.read(File.join("./uploads/extracted/", file_name)) unless data[9] == false
+          add_file :filename => file_name, :content => File.read(File.join("./uploads/extracted/", file_name)) unless data.last == false
         end
         mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name, :vendor => settings.office.vendor}
         mail.deliver!
