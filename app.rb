@@ -113,7 +113,7 @@ helpers do
         FileUtils.cp(file, './uploads/extracted/' + match[0] + ".pdf") unless match == nil
       else
         #For pune, mobile bill name format is "account number-date.pdf"
-        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)
+        FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first + ".pdf")
       end
     end
   end
