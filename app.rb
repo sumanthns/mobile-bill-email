@@ -42,7 +42,7 @@ post '/upload-bills' do
       next if row[9] == "N"
       mobile_number = row[2].to_int.to_s
       emp_id = row[0].to_int.to_s
-      settings.data.push(row[0, 9])
+      settings.data.push(row[0, 10])
       settings.data.last[0] = emp_id
       settings.data.last[2] = mobile_number
       settings.data.last.push(File.exists?(File.join("./uploads/extracted/", mobile_number + ".pdf")))
@@ -81,7 +81,9 @@ get '/send-mail', :provides => 'text/event-stream' do
           html_part do
             content_type 'text/html; charset=UTF-8'
           end
-          add_file :filename => "#{data[2]}.pdf", :content => File.read(File.join("./uploads/extracted/", "#{data[2]}.pdf")) unless data[9] == false
+          file_name = "#{data[2]}.pdf"
+          file_name = "#{data[10]}.pdf" if settings.office.name == 'pune'
+          add_file :filename => file_name, :content => File.read(File.join("./uploads/extracted/", file_name)) unless data[9] == false
         end
         mail.html_part.body = haml :'mail-template', :layout => false, :locals => {:headers => settings.header, :data => data, :name => settings.name, :vendor => settings.office.vendor}
         mail.deliver!
@@ -107,6 +109,7 @@ helpers do
         match = original_file_name.match(/\d{10}(?!.*\d{10})/) #last 10 digits
         FileUtils.cp(file, './uploads/extracted/' + match[0] + ".pdf") unless match == nil
       else
+        #For pune, mobile bill name format is "account number-date.pdf"
         FileUtils.cp(file, './uploads/extracted/' + original_file_name.split("-").first)
       end
     end
