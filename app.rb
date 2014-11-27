@@ -47,6 +47,7 @@ post '/upload-bills' do
       settings.data.last[2] = mobile_number
       bill_name = mobile_number
       bill_name = row[10] if settings.office.name == 'pune'
+      settings.data.last << bill_name
       settings.data.last << File.exists?(File.join("./uploads/extracted/", bill_name + ".pdf"))
     rescue => e
       p "#{e} - no mobile bill\n\n #{row_num}"
